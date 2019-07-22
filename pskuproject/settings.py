@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     'pskuapp',
     'pskuproject',
     'corsheaders'
@@ -69,7 +69,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [REACT_TEMPLATE_PATH],
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -132,10 +131,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(REACT_TEMPLATE_PATH, "build", "static"),
-    '/var/www/static/',
-]
+#
+# STATIC_URL = '/static/'
+#
+# STATICFILES_DIRS = [
+#     os.path.join(REACT_TEMPLATE_PATH, "build", "static"),
+#     '/var/www/static/',
+# ]

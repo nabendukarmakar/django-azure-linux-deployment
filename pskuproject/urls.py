@@ -22,6 +22,6 @@ from pskuproject import views
 urlpatterns = [
     path("", views.index),
     path("logout", views.logout),
-    # path("static/<str:folder>/<str:file>", views.static_file_handler),
+    path("static/<str:folder>/<str:file>", views.static_file_handler),
     path('api/', include('pskuapp.urls')),
 ]
