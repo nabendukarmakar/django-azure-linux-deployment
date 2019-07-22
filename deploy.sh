@@ -69,12 +69,6 @@ fi
 # Deployment
 # ----------
 
-# 2. KuduSync
-if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
-  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;antenv3.6"
-  exitWithMessageOnError "Kudu Sync failed"
-fi
-
 echo Handling Linux Python Custom Deployment - for PSKU Project.
 
 # 1. Install npm packages
@@ -91,8 +85,14 @@ source /home/site/wwwroot/antenv3.6/bin/activate
 # Install packages
 echo "Pip install requirements."
 # Update Pip with user permissions
-pip3 install -U pip3 --user
 pip3 install -r requirements.txt
+
+# 2. KuduSync
+if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
+  exitWithMessageOnError "Kudu Sync failed"
+fi
+
 
 ##################################################################################################################################
 echo "Finished successfully."
