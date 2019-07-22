@@ -1,19 +1,16 @@
 import hashlib
-import json
 import time
 
 import requests
-from django.http import HttpResponse
 
 from pskuproject.settings import BASE_URL
-
 
 
 def get_user_session(request, is_debug=False):
     session = request.session.get("user")
     if session:
         session["servertime"] = int(time.time() * 1000)
-        session
+        return session
 
     auth_url = 'https://' + BASE_URL + '/.auth/me'
     try:

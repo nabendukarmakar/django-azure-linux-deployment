@@ -12,14 +12,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-
 BASE_URL = os.environ.get('BASE_URL', "localhost:8000")
 
 LOGOUT_URL = 'https://' + BASE_URL + '/.auth/logout'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -31,16 +29,9 @@ SECRET_KEY = 'rb)jp7rx+nbyjsohvfi)de^d^%-r7&(l2xl-cq^%v9&rph51c^'
 DEBUG = True
 
 REACT_TEMPLATE_PATH = os.path.join(BASE_DIR, 'pskuproject', 'templates')
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [REACT_TEMPLATE_PATH]
-    },
-]
+print(REACT_TEMPLATE_PATH)
 
 ALLOWED_HOSTS = [BASE_URL, '*']
-
 
 # Application definition
 
@@ -60,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -72,7 +63,6 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000"
 ]
-
 
 ROOT_URLCONF = 'pskuproject.urls'
 
@@ -94,33 +84,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pskuproject.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #         'ENGINE': 'sql_server.pyodbc',
-    #         'NAME': 'powerbitest',
-    #         'USER': 'powerbitest112233',
-    #         'PASSWORD': 'Anupam123',
-    #         'HOST': 'powerbitest112233.database.windows.net',
-    #         'OPTIONS': {
-    #             'driver': 'ODBC Driver 17 for SQL Server',
-    #         },
-    #     },
-        'default': {
-            'ENGINE': 'sql_server.pyodbc',
-            'NAME': os.environ.get('SQL_DB_NAME'),
-            'USER': os.environ.get('SQL_DB_USER'),
-            'PASSWORD': os.environ.get('SQL_DB_PASSWORD'),
-            'HOST': os.environ.get('SQL_DB_HOST'),
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',
-            },
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': os.environ.get('SQL_DB_NAME'),
+        'USER': os.environ.get('SQL_DB_USER'),
+        'PASSWORD': os.environ.get('SQL_DB_PASSWORD'),
+        'HOST': os.environ.get('SQL_DB_HOST'),
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
         },
+    },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -140,7 +118,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -153,7 +130,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
