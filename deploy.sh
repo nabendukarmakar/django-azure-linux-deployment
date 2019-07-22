@@ -1,124 +1,96 @@
-@if "%SCM_TRACE_LEVEL%" NEQ "4" @echo off
+#!/bin/bash
 
-:: ----------------------
-:: KUDU Deployment Script
-:: Version: 1.0.6
-:: ----------------------
+# ----------------------
+# KUDU Deployment Script
+# Version: {Version}
+# ----------------------
 
-:: Prerequisites
-:: -------------
+# Helpers
+# -------
 
-:: Verify node.js installed
-where node 2>nul >nul
-IF %ERRORLEVEL% NEQ 0 (
-  echo Missing node.js executable, please install node.js, if already installed make sure it can be reached from current environment.
-  goto error
-)
+exitWithMessageOnError () {
+  if [ ! $? -eq 0 ]; then
+    echo "An error has occurred during web site deployment."
+    echo $1
+    exit 1
+  fi
+}
 
-:: Setup
-:: -----
+# Prerequisites
+# -------------
 
-setlocal enabledelayedexpansion
+# Verify node.js installed
+hash node 2>/dev/null
+exitWithMessageOnError "Missing node.js executable, please install node.js, if already installed make sure it can be reached from current environment."
 
-SET ARTIFACTS=%~dp0%..\artifacts
+# Setup
+# -----
 
-IF NOT DEFINED DEPLOYMENT_SOURCE (
-  SET DEPLOYMENT_SOURCE=%~dp0%.
-)
+SCRIPT_DIR="${BASH_SOURCE[0]%\\*}"
+SCRIPT_DIR="${SCRIPT_DIR%/*}"
+ARTIFACTS=$SCRIPT_DIR/../artifacts
+KUDU_SYNC_CMD=${KUDU_SYNC_CMD//\"}
 
-IF NOT DEFINED DEPLOYMENT_TARGET (
-  SET DEPLOYMENT_TARGET=%ARTIFACTS%\wwwroot
-)
+if [[ ! -n "$DEPLOYMENT_SOURCE" ]]; then
+  DEPLOYMENT_SOURCE=$SCRIPT_DIR
+fi
 
-IF NOT DEFINED NEXT_MANIFEST_PATH (
-  SET NEXT_MANIFEST_PATH=%ARTIFACTS%\manifest
+if [[ ! -n "$NEXT_MANIFEST_PATH" ]]; then
+  NEXT_MANIFEST_PATH=$ARTIFACTS/manifest
 
-  IF NOT DEFINED PREVIOUS_MANIFEST_PATH (
-    SET PREVIOUS_MANIFEST_PATH=%ARTIFACTS%\manifest
-  )
-)
+  if [[ ! -n "$PREVIOUS_MANIFEST_PATH" ]]; then
+    PREVIOUS_MANIFEST_PATH=$NEXT_MANIFEST_PATH
+  fi
+fi
 
-IF NOT DEFINED KUDU_SYNC_CMD (
-  :: Install kudu sync
+if [[ ! -n "$DEPLOYMENT_TARGET" ]]; then
+  DEPLOYMENT_TARGET=$ARTIFACTS/wwwroot
+else
+  KUDU_SERVICE=true
+fi
+
+if [[ ! -n "$KUDU_SYNC_CMD" ]]; then
+  # Install kudu sync
   echo Installing Kudu Sync
-  call npm install kudusync -g --silent
-  IF !ERRORLEVEL! NEQ 0 goto error
+  npm install kudusync -g --silent
+  exitWithMessageOnError "npm failed"
 
-  :: Locally just running "kuduSync" would also work
-  SET KUDU_SYNC_CMD=%appdata%\npm\kuduSync.cmd
-)
-goto Deployment
+  if [[ ! -n "$KUDU_SERVICE" ]]; then
+    # In case we are running locally this is the correct location of kuduSync
+    KUDU_SYNC_CMD=kuduSync
+  else
+    # In case we are running on kudu service this is the correct location of kuduSync
+    KUDU_SYNC_CMD=$APPDATA/npm/node_modules/kuduSync/bin/kuduSync
+  fi
+fi
 
-:: Utility Functions
-:: -----------------
+##################################################################################################################################
+# Deployment
+# ----------
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-:: Deployment
-:: ----------
-
-:Deployment
 echo Handling Linux Python Custom Deployment - for PSKU Project.
 
-:: 1. KuduSync
-IF /I "%IN_PLACE_DEPLOYMENT%" NEQ "1" (
-  call :ExecuteCmd "%KUDU_SYNC_CMD%" -v 50 -f "%DEPLOYMENT_SOURCE%" -t "%DEPLOYMENT_TARGET%" -n "%NEXT_MANIFEST_PATH%" -p "%PREVIOUS_MANIFEST_PATH%" -i ".git;.hg;.deployment;deploy.cmd"
-  IF !ERRORLEVEL! NEQ 0 goto error
-)
-
-IF NOT EXIST "%DEPLOYMENT_TARGET%\requirements.txt" goto postPython
-echo Detected requirements.txt.
-
-pushd "%DEPLOYMENT_TARGET%"
-
+# Update Pip with user permissions
 /opt/python/3.6.8/bin/python3 -m pip install -U pip --user
 
-:: 2. Create virtual environment
- IF NOT EXIST "%DEPLOYMENT_TARGET%\antenv3.6" (
-   echo Creating %PYTHON_RUNTIME% virtual environment.
-   /opt/python/3.6.8/bin/python3 -m pip install virtualenv
-   /opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6
-   IF !ERRORLEVEL! NEQ 0 goto error
- ) ELSE (
-   echo Found compatible virtual environment.
- )
+# 1. Install npm packages
+if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
+  echo "Found compatible virtual environment"
+else
+  echo "Creating virtual environment."
+  /opt/python/3.6.8/bin/python3 -m pip install virtualenv
+  /opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6
+fi
 
-:: 3. Install packages
-echo Pip install requirements.
+# Install packages
+echo "Pip install requirements."
 /opt/python/3.6.8/bin/python3 -m pip install --upgrade -r requirements.txt
-IF !ERRORLEVEL! NEQ 0 goto error
 
-popd
+# 2. KuduSync
+if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE/build" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
+  exitWithMessageOnError "Kudu Sync failed"
+fi
 
-:postPython
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-:: Post deployment stub
-IF DEFINED POST_DEPLOYMENT_ACTION call "%POST_DEPLOYMENT_ACTION%"
-IF !ERRORLEVEL! NEQ 0 goto error
-
-goto end
-
-:: Execute command routine that will echo out when error
-:ExecuteCmd
-setlocal
-set _CMD_=%*
-call %_CMD_%
-if "%ERRORLEVEL%" NEQ "0" echo Failed exitCode=%ERRORLEVEL%, command=%_CMD_%
-exit /b %ERRORLEVEL%
-
-:error
-endlocal
-echo An error has occurred during web site deployment.
-call :exitSetErrorLevel
-call :exitFromFunction 2>nul
-
-:exitSetErrorLevel
-exit /b 1
-
-:exitFromFunction
-()
-
-:end
-endlocal
-echo Finished successfully.
+##################################################################################################################################
+echo "Finished successfully."
