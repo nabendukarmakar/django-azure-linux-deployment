@@ -69,6 +69,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [REACT_TEMPLATE_PATH],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -79,6 +80,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'pskuproject.wsgi.application'
 
