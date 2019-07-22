@@ -82,11 +82,12 @@ else
   # /opt/python/3.6.8/bin/python3 -m pip install virtualenv
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 fi
+
 source /home/site/wwwroot/antenv3.6/bin/activate
 
 # Install packages
 echo "Pip install requirements."
-/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt --user
+pip3 install -r requirements.txt
 
 # 2. KuduSync
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
