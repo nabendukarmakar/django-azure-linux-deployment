@@ -88,12 +88,12 @@ else
 fi
 
 /opt/python/3.6.8/bin/python3 -m pip install virtualenv
-/opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6
-source /home/site/wwwroot/antenv3.6/bin/activate
+/opt/python/3.6.8/bin/python3 -m virtualenv env
+source /home/site/wwwroot/env/bin/activate
 
 # Install packages
 echo "Pip install requirements."
-python3 -m pip install -r requirements.txt --user
+/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt --user
 
 ##################################################################################################################################
 echo "Finished successfully."
