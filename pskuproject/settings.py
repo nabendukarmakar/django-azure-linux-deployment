@@ -29,7 +29,6 @@ SECRET_KEY = 'rb)jp7rx+nbyjsohvfi)de^d^%-r7&(l2xl-cq^%v9&rph51c^'
 DEBUG = True
 
 REACT_TEMPLATE_PATH = os.path.join(BASE_DIR, 'pskuproject', 'templates')
-print(REACT_TEMPLATE_PATH)
 
 ALLOWED_HOSTS = [BASE_URL, '*']
 
