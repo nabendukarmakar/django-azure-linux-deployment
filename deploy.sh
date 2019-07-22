@@ -85,14 +85,15 @@ if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
   echo "Found compatible virtual environment"
 else
   echo "Creating virtual environment."
-  /opt/python/3.6.8/bin/python3 -m pip install virtualenv --user
-  /opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6 --user
 fi
+
+/opt/python/3.6.8/bin/python3 -m pip install virtualenv
+/opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6
 source /home/site/wwwroot/antenv3.6/bin/activate
 
 # Install packages
 echo "Pip install requirements."
-python -m pip install --upgrade -r requirements.txt --user
+/opt/python/3.6.8/bin/python3 -m pip install --upgrade -r requirements.txt
 
 ##################################################################################################################################
 echo "Finished successfully."
