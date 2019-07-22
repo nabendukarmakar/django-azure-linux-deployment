@@ -80,16 +80,16 @@ echo Handling Linux Python Custom Deployment - for PSKU Project.
 # Update Pip with user permissions
 /opt/python/3.6.8/bin/python3 -m pip install -U pip --user
 
-# 1. Install npm packages
-if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
-  echo "Found compatible virtual environment"
-else
-  echo "Creating virtual environment."
-fi
+# # 1. Install npm packages
+# if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
+#   echo "Found compatible virtual environment"
+# else
+#   echo "Creating virtual environment."
+# fi
 
-/opt/python/3.6.8/bin/python3 -m pip install virtualenv
-/opt/python/3.6.8/bin/python3 -m virtualenv env
-source /home/site/wwwroot/env/bin/activate
+# /opt/python/3.6.8/bin/python3 -m pip install virtualenv
+# /opt/python/3.6.8/bin/python3 -m virtualenv env
+# source /home/site/wwwroot/env/bin/activate
 
 # Install packages
 echo "Pip install requirements."
