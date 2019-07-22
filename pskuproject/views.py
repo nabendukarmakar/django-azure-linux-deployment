@@ -19,9 +19,7 @@ def index(request):
         Static index.html page content.
     """
     if request.method == 'GET':
-        print("\n\nNabendu came here 1")
         session = get_user_session(request, is_debug=DEBUG)
-        print("\n\nNabendu came here 2")
         if session:
             request.session.modified = True
             request.session["user"] = session
