@@ -7,6 +7,13 @@ from pskuproject.settings import BASE_URL
 
 
 def get_user_session(request, is_debug=False):
+    return {
+        "username": "Dummy",
+        "email": "dummy@pg.com",
+        "userpermissions": "SAUDI_CREST_TOOTHPASTE",
+        "servertime": str(int(time.time() * 1000))
+    }
+
     session = request.session.get("user")
     if session:
         session["servertime"] = int(time.time() * 1000)
