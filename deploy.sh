@@ -80,19 +80,18 @@ else
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 fi
 
-source /home/site/wwwroot/antenv3.6/bin/activate
-
-# Install packages
-echo "Pip install requirements."
-# Update Pip with user permissions
-pip3 install -r requirements.txt
-
 # 2. KuduSync
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
   "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
   exitWithMessageOnError "Kudu Sync failed"
 fi
 
+source /home/site/wwwroot/antenv3.6/bin/activate
+
+# Install packages
+echo "Pip install requirements."
+# Update Pip with user permissions
+pip3 install -r requirements.txt
 
 ##################################################################################################################################
 echo "Finished successfully."
