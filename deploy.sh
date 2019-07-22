@@ -87,12 +87,12 @@ else
   echo "Creating virtual environment."
   /opt/python/3.6.8/bin/python3 -m pip install virtualenv --user
   /opt/python/3.6.8/bin/python3 -m virtualenv antenv3.6 --user
-  cd - > /dev/null
+  source /home/site/wwwroot/antenv3.6/bin/activate
 fi
 
 # Install packages
 echo "Pip install requirements."
-/opt/python/3.6.8/bin/python3 -m pip install --upgrade -r requirements.txt --user
+python -m pip install --upgrade -r requirements.txt --user
 
 ##################################################################################################################################
 echo "Finished successfully."
