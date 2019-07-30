@@ -82,15 +82,15 @@ if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
   echo "Found compatible virtual environment"
 else
   echo "Creating virtual environment."
-  python3.6 -m venv antenv3.6
+  python3 -m venv antenv3.6
   source antenv3.6/bin/activate
 fi
 
 # Install packages
 echo "Pip install requirements."
 
-pip3.6 install setuptools
-pip3.6 install -r requirements.txt
+pip3 install setuptools
+pip3 install -r requirements.txt
 
 ##################################################################################################################################
 echo "Finished successfully."
