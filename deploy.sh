@@ -79,7 +79,6 @@ if [ -e "$DEPLOYMENT_SOURCE/antenv3.6" ]; then
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 else
   echo "Creating virtual environment."
-  /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 fi
 
 # 2. KuduSync
@@ -97,6 +96,9 @@ echo "Pip install requirements."
 /opt/python/3.6.8/bin/python3 -m pip install -U pip --user
 /opt/python/3.6.8/bin/python3 -m pip install setuptools --user
 /opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt --user
+
+echo $PYTHONPATH
+export PYTHONPATH=$PYTHONPATH:/home/.local/lib/python3.6
 
 ##################################################################################################################################
 echo "Finished successfully."
