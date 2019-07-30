@@ -83,7 +83,9 @@ if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
 else
   echo "Creating virtual environment."
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
+  echo "Created virtual environment"
   source antenv3.6/bin/activate
+  echo "activated virtual environment"
 fi
 
 # Install packages
