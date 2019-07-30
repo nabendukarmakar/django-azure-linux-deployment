@@ -76,6 +76,7 @@ cd "$DEPLOYMENT_SOURCE"
 
 if [ -e "$DEPLOYMENT_SOURCE/antenv3.6" ]; then
   echo "Found compatible virtual environment"
+  /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 else
   echo "Creating virtual environment."
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
