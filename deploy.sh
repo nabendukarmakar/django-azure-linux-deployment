@@ -94,8 +94,8 @@ cd "$DEPLOYMENT_TARGET"
 echo "Pip install requirements."
 
 /opt/python/3.6.8/bin/python3 -m pip install -U pip --user
-/opt/python/3.6.8/bin/python3 -m pip install setuptools
-/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt
+/opt/python/3.6.8/bin/python3 -m pip install setuptools --user
+/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt --user
 
 ##################################################################################################################################
 echo "Finished successfully."
