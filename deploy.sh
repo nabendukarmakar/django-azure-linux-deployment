@@ -89,8 +89,8 @@ cd "$DEPLOYMENT_TARGET"
 #   # /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 # fi
 
-# echo "Activating virtual environment"
-# source $DEPLOYMENT_TARGET/antenv3.6/bin/activate
+echo "Activating virtual environment"
+source $DEPLOYMENT_TARGET/antenv3.6/bin/activate
 
 # # Install packages
 # echo "Pip install requirements."
