@@ -80,7 +80,7 @@ fi
 # 2. Install PIP Dependencies
 cd "$DEPLOYMENT_TARGET"
 
-if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
+if [ -e "$DEPLOYMENT_TARGET/antenv3.7" ]; then
   echo "Found compatible virtual environment"
 else
   echo "Creating virtual environment."
