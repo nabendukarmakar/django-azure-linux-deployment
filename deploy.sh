@@ -70,6 +70,8 @@ fi
 # ----------
 
 echo Handling Linux Python Custom Deployment - for PSKU Project.
+MY_PATH="`dirname \"$0\"`"
+echo "$MY_PATH"
 
 # 2. Install PIP Dependencies
 if [ -e "$DEPLOYMENT_SOURCE/antenv3.6" ]; then
