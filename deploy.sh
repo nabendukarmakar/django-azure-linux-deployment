@@ -93,8 +93,9 @@ cd "$DEPLOYMENT_TARGET"
 # Install packages
 echo "Pip install requirements."
 
-/opt/python/3.6.8/bin/python3 -m pip install setuptools
-/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt
+./antenv3.6/python3 -m pip install -U pip --user
+./antenv3.6/python3 -m pip install setuptools
+./antenv3.6/python3 -m pip install -r requirements.txt
 
 ##################################################################################################################################
 echo "Finished successfully."
