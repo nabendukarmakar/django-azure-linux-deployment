@@ -87,13 +87,26 @@ WSGI_APPLICATION = 'pskuproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': os.environ.get('SQL_DB_NAME'),
+#         'USER': os.environ.get('SQL_DB_USER'),
+#         'PASSWORD': os.environ.get('SQL_DB_PASSWORD'),
+#         'HOST': os.environ.get('SQL_DB_HOST'),
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     },
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'sql_server.pyodbc',
-        'NAME': os.environ.get('SQL_DB_NAME'),
-        'USER': os.environ.get('SQL_DB_USER'),
-        'PASSWORD': os.environ.get('SQL_DB_PASSWORD'),
-        'HOST': os.environ.get('SQL_DB_HOST'),
+        'NAME': "powerbitest",
+        'USER': "powerbitest112233",
+        'PASSWORD': "Anupam123",
+        'HOST': "tcp:powerbitest112233.database.windows.net",
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },

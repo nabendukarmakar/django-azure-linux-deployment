@@ -71,27 +71,26 @@ fi
 
 echo Handling Linux Python Custom Deployment - for PSKU Project.
 
-# 1. Install npm packages
+# 2. KuduSync
+if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
+  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh;antenv3.6"
+  exitWithMessageOnError "Kudu Sync failed"
+fi
+
+# 2. Install PIP Dependencies
 if [ -e "$DEPLOYMENT_TARGET/antenv3.6" ]; then
   echo "Found compatible virtual environment"
 else
   echo "Creating virtual environment."
-  # /opt/python/3.6.8/bin/python3 -m pip install virtualenv
-  /opt/python/3.6.8/bin/python3 -m venv antenv3.6
+  python3.6 -m venv antenv3.6
+  source antenv3.6/bin/activate
 fi
-
-# 2. KuduSync
-if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
-  "$KUDU_SYNC_CMD" -v 50 -f "$DEPLOYMENT_SOURCE" -t "$DEPLOYMENT_TARGET" -n "$NEXT_MANIFEST_PATH" -p "$PREVIOUS_MANIFEST_PATH" -i ".git;.hg;.deployment;deploy.sh"
-  exitWithMessageOnError "Kudu Sync failed"
-fi
-
-source /home/site/wwwroot/antenv3.6/bin/activate
 
 # Install packages
 echo "Pip install requirements."
-# Update Pip with user permissions
-pip3 install -r requirements.txt
+
+pip3.6 install setuptools
+pip3.6 install -r requirements.txt
 
 ##################################################################################################################################
 echo "Finished successfully."
