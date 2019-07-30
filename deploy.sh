@@ -70,10 +70,10 @@ fi
 # ----------
 
 echo Handling Linux Python Custom Deployment - for PSKU Project.
-MY_PATH="`dirname \"$0\"`"
-echo "$MY_PATH"
 
 # 2. Install PIP Dependencies
+cd "$DEPLOYMENT_SOURCE"
+
 if [ -e "$DEPLOYMENT_SOURCE/antenv3.6" ]; then
   echo "Found compatible virtual environment"
 else
@@ -86,8 +86,8 @@ source antenv3.6/bin/activate
 # Install packages
 echo "Pip install requirements."
 
-pip install setuptools
-pip install -r requirements.txt
+/opt/python/3.6.8/bin/python3 -m pip install setuptools
+/opt/python/3.6.8/bin/python3 -m pip install -r requirements.txt
 
 # 2. KuduSync
 if [[ "$IN_PLACE_DEPLOYMENT" -ne "1" ]]; then
