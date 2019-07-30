@@ -81,7 +81,7 @@ else
   /opt/python/3.6.8/bin/python3 -m venv antenv3.6
 fi
 
-source antenv3.6/bin/activate
+source $DEPLOYMENT_SOURCE/antenv3.6/bin/activate
 
 # Install packages
 echo "Pip install requirements."
