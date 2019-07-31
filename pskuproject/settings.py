@@ -100,19 +100,6 @@ DATABASES = {
     },
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'sql_server.pyodbc',
-#         'NAME': "powerbitest",
-#         'USER': "powerbitest112233",
-#         'PASSWORD': "Anupam123",
-#         'HOST': "tcp:powerbitest112233.database.windows.net",
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',
-#         },
-#     },
-# }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
